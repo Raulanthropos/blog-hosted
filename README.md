@@ -1,4 +1,4 @@
 # EPICODE BLOG TEMPLATE
 
-- Updated to Reac18
-- Changes quill to draftjs
+### BE link: https://strive-blog-be-production-d83c.up.railway.app/
+### FE link: https://strive-blog-hosted.vercel.app/
