@@ -3,6 +3,7 @@ import { Col, Row } from "react-bootstrap";
 import posts from "../../../data/posts.json";
 import BlogItem from "../blog-item/BlogItem";
 import {useState, useEffect} from 'react'
+import {Button} from "react-bootstrap";
 
 const BlogList = (props) => {
   const [news, setNews] = useState([]);
@@ -24,6 +25,9 @@ const BlogList = (props) => {
 
   console.log(news);
   return (
+    <>
+    <a href="https://strive-blog-be-production-d83c.up.railway.app/authorsCSV" target="_blank" rel="noreferrer">
+    <Button>Download list of authors</Button></a>
     <Row>
       {news.map((post) => (
         <Col
@@ -36,6 +40,7 @@ const BlogList = (props) => {
         </Col>
       ))}
     </Row>
+    </>
   );
 };
 
