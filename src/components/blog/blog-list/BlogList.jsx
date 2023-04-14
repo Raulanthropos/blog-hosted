@@ -1,46 +1,59 @@
-import React from "react";
-import { Col, Row } from "react-bootstrap";
-import posts from "../../../data/posts.json";
+import React, { useEffect, useState } from "react";
+import { Alert, Col, Row, Spinner } from "react-bootstrap";
 import BlogItem from "../blog-item/BlogItem";
-import {useState, useEffect} from 'react'
-import {Button} from "react-bootstrap";
 
-const BlogList = (props) => {
-  const [news, setNews] = useState([]);
+const BlogList = () => {
+  const [loading, setLoading] = useState(false);
+  const [errorOccurred, setErrorOccured] = useState(false);
+  const [blogPosts, setBlogPosts] = useState([]);
+
+  const getBlogPosts = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(process.env.REACT_APP_BE_URL + "/blogPosts");
+      if (response.ok) {
+        const blogPosts = await response.json();
+        console.log(blogPosts);
+        setBlogPosts(blogPosts);
+      } else {
+        setErrorOccured(true);
+      }
+    } catch (error) {
+      setErrorOccured(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetching = async () => {
-      let response = await fetch(
-        "https://strive-blog-be-production-d83c.up.railway.app/blogs"
-      );
-      if (response.ok) {
-        const fetchedData = await response.json();
-        setNews(fetchedData);
-      } else {
-        console.log("error");
-      }
-    };
-    fetching();
+    getBlogPosts();
   }, []);
 
-  console.log(news);
   return (
-    <>
-    <a href="https://strive-blog-be-production-d83c.up.railway.app/authorsCSV" target="_blank" rel="noreferrer">
-    <Button>Download list of authors</Button></a>
     <Row>
-      {news.map((post) => (
-        <Col
-          md={4}
-          style={{
-            marginBottom: 50,
-          }}
-        >
-          <BlogItem key={post.title} {...post} />
-        </Col>
-      ))}
+      {loading && <Spinner animation="border" role="status"></Spinner>}
+      {!loading && errorOccurred && (
+        <Alert variant="danger">Error occurred when fetching blog posts</Alert>
+      )}
+      {!loading && !errorOccurred && blogPosts.length === 0 && (
+        <Alert variant="info">No blog posts yet</Alert>
+      )}
+      {!loading && !errorOccurred && blogPosts.length > 0 && (
+        <>
+          {blogPosts.map((blogPost, i) => (
+            <Col
+              key={i}
+              md={4}
+              style={{
+                marginBottom: 50,
+              }}
+            >
+              <BlogItem post={blogPost}/>
+            </Col>
+          ))}
+        </>
+      )}
     </Row>
-    </>
   );
 };
 

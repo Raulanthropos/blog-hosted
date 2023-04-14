@@ -1,19 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Image, Row } from "react-bootstrap";
 import "./styles.css";
 
-const BlogAuthor = (props) => {
-  const { name, avatar } = props;
+const BlogAuthor = ({ authors }) => {
   return (
-    <Row>
-      <Col xs={2}>
-        <Image className="blog-author" src={avatar} roundedCircle />
-      </Col>
-      <Col>
-        <div>by</div>
-        <h6>{name}</h6>
-      </Col>
-    </Row>
+    <>
+      {authors &&
+        authors.map((author, i) => (
+          <Row key={i}>
+            <Col xs={2}>
+              <Image
+                className="blog-author"
+                src={author.avatar}
+                roundedCircle
+              />
+            </Col>
+            <Col>
+              <div>by</div>
+              <h6>{author.name}</h6>
+            </Col>
+          </Row>
+        ))}
+    </>
   );
 };
 

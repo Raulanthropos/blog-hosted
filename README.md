@@ -1,5 +1,7 @@
-# EPICODE BLOG TEMPLATE
+# React Blog App
 
-### BE repo: https://github.com/Raulanthropos/strive-blog-be
-### BE link: https://strive-blog-be-production-d83c.up.railway.app/
-### FE link: https://strive-blog-hosted.vercel.app/
+Frontend for react blog app, connected to mongoDB database for CRUD actions with blog posts.
+
+User authentication using tokens and google OAuth
+
+[Link to backend](https://github.com/milesbb/Blog-Backend-With-Auth)
