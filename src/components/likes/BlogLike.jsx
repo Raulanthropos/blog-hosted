@@ -15,6 +15,7 @@ export default function BlogLike({ defaultLikes, onChange }) {
   };
   useEffect(() => {
     onChange && onChange(likes);
+    //eslint-disable-next-line
   }, [iLikedThisArticle]);
   return (
     <div>

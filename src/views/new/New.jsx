@@ -1,177 +1,191 @@
-import React, { useCallback, useState } from "react";
-import { Alert, Button, Container, Form, Spinner } from "react-bootstrap";
-import ReactQuill from "react-quill";
-import 'react-quill/dist/quill.snow.css';
+import { convertToHTML } from "draft-convert";
+import { EditorState } from "draft-js";
+import React, { useEffect, useState } from "react";
+import { Button, Container, Form, Row, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import Spinner from "react-bootstrap/Spinner";
 import "./styles.css";
-
 const NewBlogPost = (props) => {
-  const [text, setText] = useState("");
-  const [category, setCategory] = useState("");
+  let [loading, setLoading] = useState(false);
+  // const [poster, setPoster] = useState([]);
   const [title, setTitle] = useState("");
-  const [imgData, setImgData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [errorOccurred, setErrorOccurred] = useState(false);
-  const [postSuccess, setPostSuccess] = useState(false);
-
-  const postBlogPost = async () => {
-    setPostSuccess(false);
-    setErrorOccurred(false);
-    setLoading(true);
-
-    const postImgFormData = new FormData();
-    if (imgData !== null) {
-      postImgFormData.append("cover", imgData);
-    }
-
-    const blogPost = {
-      category: category,
-      title: title,
-      cover: "https://ui-avatars.com/api/?name=ER+ER",
-      readTime: {
-        value: 2,
-        unit: "minute",
-      },
-      author: {
-        name: "Sammy",
-        avatar: "https://ui-avatars.com/api/?name=Sammy+Testpost",
-      },
-      content: text,
-    };
-
-    const config = {
-      method: "POST",
-      body: JSON.stringify(blogPost),
-      headers: new Headers({
-        "Content-Type": "application/json",
-      }),
-    };
-
-    try {
-      const response = await fetch(process.env.REACT_APP_BE_URL + "/blogPosts", config);
-      if (response.ok) {
-        const blogPostResponse = await response.json();
-        const imgPostResponse = await fetch(
-          process.env.REACT_APP_BE_URL + "/blogPosts/" + blogPostResponse._id + "/cloudinary",
-          {
-            method: 'POST',
-            body: postImgFormData,
-            headers: {
-              "X-API-KEY": "392859513733232"
-            }
-          }
-        );
-        if (imgPostResponse.ok) {
-          setPostSuccess(true);
-        } else {
-          setErrorOccurred(true);
-        }
-      } else {
-        setErrorOccurred(true);
-      }
-    } catch (error) {
-      setErrorOccurred(true);
-    } finally {
-      setLoading(false);
-      setText("");
-      setCategory("");
-      setImgData("");
-      setTitle("");
-      infoTimeoutFunc(3000);
-    }
-  };
-
-  const resetAllState = () => {
-    setErrorOccurred(false);
-    setPostSuccess(false);
-    setLoading(false);
-  };
-
-  const infoTimeoutFunc = (time) => {
-    const infoTimeout = setTimeout(resetAllState, time);
-  };
-
-  const handleChange = useCallback((value) => {
-    setText(value);
-  });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (text && category && title && imgData) {
-      postBlogPost();
-    } else {
-      setErrorOccurred(true);
-      infoTimeoutFunc(2000);
-    }
-  };
-
-  return (
-    <Container className="new-blog-container">
-      <Form className="mt-5" onSubmit={handleSubmit}>
-        <Form.Group controlId="blog-form" className="mt-3">
-          <Form.Label>Title</Form.Label>
-          <Form.Control
-            size="lg"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-          />
-        </Form.Group>
-        <Form.Group controlId="blog-category" className="mt-3">
-          <Form.Label>Category</Form.Label>
-          <Form.Control
-            size="lg"
-            placeholder="Category"
-            value={category}
-            onChange={(e) => {
-              setCategory(e.target.value);
-            }}
-          />
-        </Form.Group>
-        <Form.Group controlId="blog-category" className="mt-3">
-          <Form.Label>Post Cover Image</Form.Label>
-          <Form.File
-            required
-            name="file"
-            onChange={(e) => {
-              setImgData(e.target.files[0]);
-            }}
-          />
-        </Form.Group>
-        <Form.Group controlId="blog-content" className="mt-3">
-          <Form.Label>Blog Content</Form.Label>
-          <ReactQuill
-            value={text}
-            onChange={setText}
-            className="new-blog-content"
-          />
-        </Form.Group>
-        {loading && <Spinner animation="border" role="status"></Spinner>}
-        {!loading && errorOccurred && (
-          <Alert variant="danger">Error occurred when posting</Alert>
-        )}
-        {!loading && !errorOccurred && postSuccess && (
-          <Alert variant="success">Post successful!</Alert>
-        )}
-        <Form.Group className="d-flex mt-3 justify-content-end">
-          <Button type="reset" size="lg" variant="outline-dark">
-            Reset
-          </Button>
-          <Button
-            type="submit"
-            size="lg"
-            variant="dark"
-            style={{
-              marginLeft: "1em",
-            }}
-          >
-            Submit
-          </Button>
-        </Form.Group>
-      </Form>
-    </Container>
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [value, setValue] = useState("");
+  const user = useSelector((state) => state.loadedProfile.user);
+  const username = user.name + " " + user.surname;
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
   );
+  const [html, setHTML] = useState(null);
+  useEffect(() => {
+    let html = convertToHTML(editorState.getCurrentContent());
+    setHTML(html);
+    document
+      .querySelector("#submit_button")
+      .addEventListener("click", function (event) {
+        event.preventDefault();
+      });
+
+    // console.log(poster);
+    //eslint-disable-next-line
+  }, [editorState]);
+  const itemToSend = {
+    title: title,
+    email: email,
+    content: `${html}`,
+    author: {
+      name: username,
+      avatar:
+        user.avatar ||
+        "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+    },
+    readTime: {
+      value: value,
+      unit: "minute",
+    },
+  };
+  // const posterChangeHandler = (e) => {
+  //   setPoster(e.target.files[0]);
+  // };
+  const onChangeHandler = (value, fieldToSet) => {
+    fieldToSet(value);
+  };
+  const onSubmitHandler = () => {
+    setLoading(true);
+    const formData = new FormData();
+    console.log(formData);
+    createNewPost(formData);
+  };
+
+  //---------------------------------------------------------------------------------------
+  const createNewPost = (formData) => {
+    const options = {
+      method: "POST",
+      body: JSON.stringify(itemToSend),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    fetch("http://localhost:3001/blogPosts", options)
+      .then((response) => response.json())
+          .then((s) => {
+            if (s) {
+              // setLoading(false);
+              window.location.replace("/home");
+            }
+          })
+  };
+  if (loading === true) {
+    return (
+      <div className="text-light" id="full-screen">
+        <div className="text-center">
+          <h3>Posting...</h3>
+          <Spinner animation="border" className="mt-2" />
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <Container className="new-blog-container text-light" id="main-container">
+        <Form className="mt-3">
+          <Form.Group controlId="blog-form">
+            <Form.Label>Title</Form.Label>
+            <Form.Control
+              size="lg"
+              placeholder="Title of your blog"
+              value={title}
+              onChange={(e) => onChangeHandler(e.target.value, setTitle)}
+            />
+          </Form.Group>
+          <Row>
+            <Col>
+              <Form.Group controlId="name" className="mt-3 ">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  size="md"
+                  placeholder="Anthony Stark"
+                  value={username}
+                  onChange={(e) => onChangeHandler(e.target.value, setName)}
+                />
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group controlId="email" className="mt-3 ">
+                <Form.Label>Nickame</Form.Label>
+                <Form.Control
+                  size="md"
+                  placeholder="@jasonbourne"
+                  value={user.email}
+                  onChange={(e) => onChangeHandler(e.target.value, setEmail)}
+                />
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group controlId="time" className="mt-3">
+                <Form.Label>Read-Time</Form.Label>
+                <Form.Control
+                  size="md"
+                  placeholder="2"
+                  value={value}
+                  onChange={(e) => onChangeHandler(e.target.value, setValue)}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <div>
+            <div>
+              <Form.Group
+                controlId="blog-content"
+                className="mt-3 p-2 rounded bg-light text-dark"
+                id="content"
+              >
+                <Form.Label>Blog Content</Form.Label>
+                <Editor
+                  editorState={editorState}
+                  toolbarClassName="toolbarClassName"
+                  wrapperClassName="wrapperClassName"
+                  editorClassName="editorClassName"
+                  onEditorStateChange={setEditorState}
+                />
+              </Form.Group>
+            </div>
+          </div>
+          <div className="d-flex justify-content-center mt-2">
+            <div>
+              <Form.Label>Upload Your cover:</Form.Label>
+              <Form.Control
+                type="file"
+                // onChange={(e) => posterChangeHandler(e)}
+                accept=".jpg, .jpeg"
+              />
+            </div>
+          </div>
+          <Form.Group className="d-flex mt-3 justify-content-end">
+            <Button type="reset" size="lg" variant="outline-light">
+              Reset
+            </Button>
+
+            <Button
+              // type="submit"
+              size="lg"
+              id="submit_button"
+              variant="light"
+              style={{
+                marginLeft: "1em",
+              }}
+              onClick={onSubmitHandler}
+            >
+              Submit
+            </Button>
+          </Form.Group>
+        </Form>
+      </Container>
+    );
+  }
 };
 
 export default NewBlogPost;

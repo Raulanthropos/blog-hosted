@@ -1,165 +1,117 @@
-import React, { useState } from "react";
-import { Alert, Button, Form, Image, Spinner } from "react-bootstrap";
-import ReactDOM from "react-dom";
-import { Link, useNavigate } from "react-router-dom";
+import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import React from "react";
+import { useState } from "react";
+import "./styles.css";
+import Spinner from "react-bootstrap/Spinner";
+import { useDispatch } from "react-redux";
+import { SET_USER } from "../../redux/actions";
+import { Link } from "react-router-dom";
 
-const Login = ({ setLoggedIn, loggedIn }) => {
+const Login = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errorOccurred, setErrorOccurred] = useState(false);
-  const [postSuccess, setPostSuccess] = useState(false);
-  const navigate = useNavigate();
+  const [loggedIn, setLoggedIn] = useState(false);
 
-  const signInWithGoogle = async () => {
-    try {
-      window.location.replace(
-        process.env.REACT_APP_BE_URL + "/authors/auth/google"
-      );
-    } catch (error) {}
+  React.useEffect(() => {
+    fetchDatabase();
+  }, []);
+
+  const [responseJSON, setResponseJSON] = useState([]);
+
+  const fetchDatabase = async () => {
+    const response = await fetch("http://localhost:3001/authors");
+    const responseUnboxed = await response.json();
+    setResponseJSON(responseUnboxed);
   };
 
-  const registerAuthor = async () => {
-    try {
-      setPostSuccess(false);
-      setErrorOccurred(false);
-      setLoading(true);
-
-      const loggingInAuthor = {
-        email: email,
-        password: password,
-      };
-
-      const config = {
-        method: "POST",
-        body: JSON.stringify(loggingInAuthor),
-        headers: new Headers({
-          "Content-Type": "application/json",
-        }),
-      };
-
-      const response = await fetch(
-        process.env.REACT_APP_BE_URL + "/authors/login",
-        config
-      );
-
-      if (response.ok) {
-        const tokens = await response.json();
-
-        localStorage.setItem("accessToken", tokens.accessToken);
-        localStorage.setItem("refreshToken", tokens.refreshToken);
-
-        setLoggedIn(true);
-        console.log("I'm logged in!");
-
-        navigate("/home");
-
-        setPostSuccess(true);
-      } else {
-        setErrorOccurred(true);
-      }
-    } catch (error) {
-      setErrorOccurred(true);
-    } finally {
-      setLoading(false);
-      setEmail("");
-      setPassword("");
-      infoTimeoutFunc(3000);
+  const fetchLogin = async () => {
+    function isUser(user) {
+      return user.email === email && user.password === password;
     }
-  };
 
-  const resetAllState = () => {
-    setErrorOccurred(false);
-    setPostSuccess(false);
-    setLoading(false);
-  };
+    const user = responseJSON.find(isUser);
 
-  const infoTimeoutFunc = (time) => {
-    const infoTimeout = setTimeout(resetAllState, time);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (email && password && !loading && !errorOccurred && !postSuccess) {
-      registerAuthor();
+    if (user === undefined) {
+      console.log("Wrong password!");
     } else {
-      setErrorOccurred(true);
-      infoTimeoutFunc(2000);
+      console.log("Welcome, user");
+      setLoggedIn(true);
+
+      dispatch({
+        type: SET_USER,
+        payload: user,
+      });
     }
   };
-
-  return (
-    <div
-      style={{
-        width: "100vw",
-        background: "white",
-        position: "absolute",
-        zIndex: 99,
-        paddingTop: "10rem",
-        paddingBottom: "10rem",
-      }}
-      className="d-flex"
-    >
-      <div
-        style={{
-          boxShadow: "-4px 5px 15px 5px rgba(0,0,0,0.39)",
-          borderRadius: "40px",
-        }}
-        className="w-50 p-4 mx-auto text-center"
-      >
-        <h2>Login</h2>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group className="my-4" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
+  const redirectme = () => {
+    // setTimeout(() => {
+    //
+    // }),
+    //   3000;
+    setTimeout(() => {
+      window.location.replace("/home");
+    }, 1300);
+  };
+  const onChangeHandler = (value, fieldToSet) => {
+    fieldToSet(value);
+  };
+  if (loggedIn) {
+    return (
+      <>
+        <div className="mt-5 mb-5 text-light d-flex justify-content-center">
+          Welcome, {email}!{}
+        </div>
+        <div className="d-flex justify-content-center align-items-center">
+          <Spinner animation="border" />
+        </div>
+        {redirectme()}
+      </>
+    );
+  } else {
+    return (
+      <Container className="w-75 text-light mt-5">
+        <Form>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
-              placeholder="Enter email"
+              placeholder="Enter your email"
               value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
+              onChange={(e) => onChangeHandler(e.target.value, setEmail)}
             />
-            <Form.Text className="text-muted">
-              We'll never share your email with anyone else.
-            </Form.Text>
           </Form.Group>
 
-          <Form.Group className="my-4" controlId="formBasicPassword">
+          <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Password"
               value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
+              onChange={(e) => onChangeHandler(e.target.value, setPassword)}
             />
           </Form.Group>
 
-          {loading && <Spinner animation="border" role="status"></Spinner>}
-          {!loading && errorOccurred && (
-            <Alert variant="danger">Error logging in, try again!</Alert>
-          )}
-          {!loading && !errorOccurred && postSuccess && (
-            <Alert variant="success">Login successful!</Alert>
-          )}
-
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-          <Image
-            className="ml-2"
-            style={{ width: "11rem", cursor: "pointer" }}
-            onClick={signInWithGoogle}
-            src="https://res.cloudinary.com/dycynydei/image/upload/v1668093313/btn_google_signin_light_normal_web_2x_ouundr.png"
-          />
+          <div className="d-flex justify-content-between">
+            <div className="d-flex align-items-center">
+              Or, &nbsp;
+              <Link to="sign-up" className="text-light">
+                <h6 className="p-0 m-0"> Sign-up</h6>
+              </Link>
+            </div>
+            <button
+              type="button"
+              className="btn btn-outline-light"
+              id="login"
+              onClick={fetchLogin}
+            >
+              Login
+            </button>
+          </div>
         </Form>
-        <div className="mt-4">
-          <Link to="/signup">...or create an account!</Link>
-        </div>
-      </div>
-    </div>
-  );
+      </Container>
+    );
+  }
 };
 
 export default Login;

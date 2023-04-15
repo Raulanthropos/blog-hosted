@@ -1,7 +1,16 @@
-# React Blog App
+### Introduction
+Web application built in collaboration with [Raul](https://github.com/Raulanthropos).
 
-Frontend for react blog app, connected to mongoDB database for CRUD actions with blog posts.
+Built on:
+<ul>
+<li>React.js</li>
+<li>Redux</li>
+<li>Bootsrap 5</li>
+<li>Express.js Backend</li>
+</ul>
+Resources:
 
-User authentication using tokens and google OAuth
 
-[Link to backend](https://github.com/milesbb/Blog-Backend-With-Auth)
+[front-end](https://github.com/talmkg/Blog-FrontEnd)<br/>
+[back-end](https://github.com/talmkg/MainBackEnd-Express.js) 👨‍💻
+

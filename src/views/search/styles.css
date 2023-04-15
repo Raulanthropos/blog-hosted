@@ -1,0 +1,16 @@
+.new-blog-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.new-blog-content {
+  height: 400px;
+  margin-bottom: 80px;
+}
+@media (min-width: 1200px) {
+  #main-container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}

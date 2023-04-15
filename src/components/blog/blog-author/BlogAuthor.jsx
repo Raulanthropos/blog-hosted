@@ -1,27 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Col, Image, Row } from "react-bootstrap";
 import "./styles.css";
 
-const BlogAuthor = ({ authors }) => {
+const BlogAuthor = (props) => {
+  const { name, avatar, value, unit } = props;
   return (
-    <>
-      {authors &&
-        authors.map((author, i) => (
-          <Row key={i}>
-            <Col xs={2}>
-              <Image
-                className="blog-author"
-                src={author.avatar}
-                roundedCircle
-              />
-            </Col>
-            <Col>
-              <div>by</div>
-              <h6>{author.name}</h6>
-            </Col>
-          </Row>
-        ))}
-    </>
+    <Row>
+      <Col xs={12} className="d-flex align-items-center justify-content-start">
+        <Image className="blog-author me-1" src={avatar} roundedCircle />
+        <p id="no-p-no-m" className="text-truncate">
+          by {name}
+        </p>
+      </Col>
+    </Row>
   );
 };
 

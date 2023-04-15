@@ -1,10 +1,30 @@
 .new-blog-container {
   display: flex;
   flex-direction: column;
-  margin-top: 100px;
 }
 
 .new-blog-content {
-  height: 400px;
-  margin-bottom: 80px;
+}
+
+#content {
+}
+@media (max-width: 700px) {
+  #hide-on-mobile {
+    display: none;
+  }
+  #show-on-mobile {
+    display: block !important;
+  }
+}
+@media (min-width: 1200px) {
+  #main-container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+#full-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

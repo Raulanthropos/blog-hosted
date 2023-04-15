@@ -6,10 +6,13 @@ const Footer = (props) => {
     <footer
       style={{
         paddingTop: 50,
-        paddingBottom: 50,
+        paddingBottom: 70,
       }}
     >
-      <Container>{`${new Date().getFullYear()} - © Strive School | Developed for homework projects.`}</Container>
+      <Container
+        style={{ position: "relative", bottom: 0 }}
+        className="w-100 text-center  text-light"
+      >{`${new Date().getFullYear()} - © Comfy Blog `}</Container>
     </footer>
   );
 };

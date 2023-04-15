@@ -1,6 +1,16 @@
 .blog-main-title {
   font-size: 3rem;
   font-weight: bold;
-  margin-top: 50px;
+  margin-top: 150px;
   margin-bottom: 50px;
+}
+#container {
+  min-height: 80vh;
+}
+@media (max-width: 1000px) {
+}
+@media (min-width: 1000px) {
+  #container {
+    margin-top: 1.5rem !important;
+  }
 }
