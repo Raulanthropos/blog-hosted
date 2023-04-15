@@ -4,8 +4,9 @@ import { useState } from "react";
 import "./styles.css";
 import Spinner from "react-bootstrap/Spinner";
 import { useDispatch } from "react-redux";
-import { SET_USER } from "../../redux/actions";
+import { SET_USER, getAccessToken, setAccessToken } from "../../redux/actions";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -19,30 +20,23 @@ const Login = () => {
 
   const [responseJSON, setResponseJSON] = useState([]);
 
+  const user = useSelector((state) => state.loadedProfile.user)
+
   const fetchDatabase = async () => {
     const response = await fetch("http://localhost:3001/authors");
     const responseUnboxed = await response.json();
     setResponseJSON(responseUnboxed);
   };
 
-  const fetchLogin = async () => {
-    function isUser(user) {
-      return user.email === email && user.password === password;
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const credentials = {
+      email: email,
+      password: password
     }
-
-    const user = responseJSON.find(isUser);
-
-    if (user === undefined) {
-      console.log("Wrong password!");
-    } else {
-      console.log("Welcome, user");
-      setLoggedIn(true);
-
-      dispatch({
-        type: SET_USER,
-        payload: user,
-      });
-    }
+    console.log("logging in")
+    dispatch(getAccessToken(credentials))
+    setLoggedIn(true);
   };
   const redirectme = () => {
     // setTimeout(() => {
@@ -103,7 +97,7 @@ const Login = () => {
               type="button"
               className="btn btn-outline-light"
               id="login"
-              onClick={fetchLogin}
+              onClick={handleSubmit}
             >
               Login
             </button>

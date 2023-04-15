@@ -33,7 +33,7 @@ const SideBlogItem = (props) => {
                     <small>
                       <p className="text-muted card-text text-truncate">
                         {new Date(createdAt).toLocaleDateString()} •{" "}
-                        {readTime.value} {readTime.unit}('s) Read
+                        {/* {readTime.value} {readTime.unit}('s) Read */}
                       </p>
                     </small>
                   </Card.Body>

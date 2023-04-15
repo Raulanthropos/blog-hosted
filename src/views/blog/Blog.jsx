@@ -5,7 +5,7 @@ import BlogAuthor from "../../components/blog/blog-author/BlogAuthor";
 import BlogLike from "../../components/likes/BlogLike";
 import Spinner from "react-bootstrap/Spinner";
 import "./styles.css";
-const Blog = (props) => {
+const Blog = () => {
   const [blog, setBlog] = useState({});
   const [loading, setLoading] = useState(true);
   const params = useParams();
@@ -13,6 +13,7 @@ const Blog = (props) => {
 
   useEffect(() => {
     const { id } = params;
+    console.log("this is the id", id);
     const fetching = async () => {
       let response = await fetch(`http://localhost:3001/blogPosts/${id}`);
       if (response.ok) {

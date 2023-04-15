@@ -15,10 +15,11 @@ const BlogList = () => {
 
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.loadedProfile.blogs);
-  const loading = useSelector((state) => state.isLoading);
+  const loading = useSelector((state) => state.loadedProfile.isLoading);
 
   React.useEffect(() => {
     dispatch(getBlogs());
+    //eslint-disable-next-line
   }, []);
 
   let reverseArray = blogs?.map(
@@ -39,7 +40,7 @@ const BlogList = () => {
         <Row className="g-1">
           <Col xs={12} md={12} lg={7} className="text-light">
             {reverseArray?.map((blog, index) => {
-              if (index == 0) {
+              if (index === 0) {
                 return <MainBlogItem key={blog._id} {...blog} />;
               }
             })}

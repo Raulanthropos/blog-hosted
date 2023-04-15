@@ -18,7 +18,7 @@ import { useSelector } from "react-redux";
 
 function MyVerticallyCenteredModal(props) {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.loadedProfile.user);
   const logout = () => {
     dispatch({
       type: SET_USER,
@@ -60,13 +60,13 @@ function MyVerticallyCenteredModal(props) {
             value={user.surname}
           />
         </InputGroup>
-        <InputGroup className="mt-1 mb-1">
+        {/* <InputGroup className="mt-1 mb-1">
           <Form.Control
             placeholder="name"
             aria-label="exiting_user"
             value={user.nickname}
           />
-        </InputGroup>
+        </InputGroup> */}
         <InputGroup className="mt-1 mb-1">
           <Form.Control
             placeholder="name"
@@ -90,17 +90,16 @@ function MyVerticallyCenteredModal(props) {
     </Modal>
   );
 }
-const Profile = (props) => {
+const Profile = () => {
   const dispatch = useDispatch();
   const [modalShow, setModalShow] = React.useState(false);
   const blogs = useSelector((state) => state.loadedProfile.blogs);
   const user = useSelector((state) => state.loadedProfile.user);
   console.log("user", user, "blogs", blogs)
   const full_name = user.name + " " + user.surname;
-  const my_blogs = blogs?.filter((blog) => blog.author.name === full_name);
-  React.useEffect(() => {}, []);
+  const my_blogs = blogs?.filter((blog) => blog.author === full_name);
 
-  if (user.length === 0) {
+  if (user?.length === 0) {
     return (
       <>
         <div style={{ minHeight: "100vh" }}>
@@ -152,7 +151,7 @@ const Profile = (props) => {
           id="content-under-images"
         >
           <div className="text-center">
-            <h3>{user.nickname}</h3>
+            {/* <h3>{user.nickname}</h3> */}
             <h6>
               {user.name} {user.surname}
             </h6>
@@ -190,7 +189,7 @@ const Profile = (props) => {
 
         <Container>
           <Row>
-            {my_blogs.map((blog) => (
+            {my_blogs?.map((blog) => (
               <Col xs={12} s={6} md={6} lg={4} className="mb-2">
                 <BlogItem key={blog.title} {...blog} />
               </Col>
