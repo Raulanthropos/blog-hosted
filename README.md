@@ -1,5 +1,5 @@
 ### Introduction
-Web application built in collaboration with [Raul](https://github.com/Raulanthropos).
+Blog application.
 
 Built on:
 <ul>
@@ -10,7 +10,5 @@ Built on:
 </ul>
 Resources:
 
-
-[front-end](https://github.com/talmkg/Blog-FrontEnd)<br/>
-[back-end](https://github.com/talmkg/MainBackEnd-Express.js) 👨‍💻
+[back-end](https://github.com/Raulanthropos/strive-blog-w-mongoose-tuesday) 👨‍💻
 
