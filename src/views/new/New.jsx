@@ -7,6 +7,9 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Spinner from "react-bootstrap/Spinner";
 import "./styles.css";
+import { addPost } from "../../redux/actions";
+import { useNavigate } from "react-router-dom";
+
 const NewBlogPost = (props) => {
   let [loading, setLoading] = useState(false);
   // const [poster, setPoster] = useState([]);
@@ -14,8 +17,12 @@ const NewBlogPost = (props) => {
   const [category, setCategory] = useState("");
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
+  const [poster, setPoster] = useState("");
   const user = useSelector((state) => state.loadedProfile.user);
+  const accessToken = useSelector(state => state.loadedProfile.accessToken);
   const username = user.name + " " + user.surname;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -44,40 +51,22 @@ const NewBlogPost = (props) => {
     },
     readTime: {
       value: value,
-      unit: "minute",
+      unit: "minutes",
     },
+    cover: poster,
   };
-  // const posterChangeHandler = (e) => {
-  //   setPoster(e.target.files[0]);
-  // };
+
   const onChangeHandler = (value, fieldToSet) => {
     fieldToSet(value);
   };
   const onSubmitHandler = () => {
     setLoading(true);
-    const formData = new FormData();
-    console.log(formData);
-    createNewPost(formData);
+    dispatch(addPost(accessToken, itemToSend));
+    setTimeout(() => {
+      navigate("/home");
+    }, 2000);
   };
 
-  //---------------------------------------------------------------------------------------
-  const createNewPost = (formData) => {
-    const options = {
-      method: "POST",
-      body: JSON.stringify(itemToSend),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    fetch(process.env.REACT_APP_BE_URL + "/blogPosts", options)
-      .then((response) => response.json())
-          .then((s) => {
-            if (s) {
-              // setLoading(false);
-              window.location.replace("/home");
-            }
-          })
-  };
   if (loading === true) {
     return (
       <div className="text-light" id="full-screen">
@@ -156,12 +145,10 @@ const NewBlogPost = (props) => {
           </div>
           <div className="d-flex justify-content-center mt-2">
             <div>
-              <Form.Label>Upload Your cover:</Form.Label>
-              <Form.Control
-                type="file"
-                // onChange={(e) => posterChangeHandler(e)}
-                accept=".jpg, .jpeg"
-              />
+            <Form.Group controlId="formPicture">
+            <Form.Label>Picture URL</Form.Label>
+            <Form.Control type="text" placeholder="Enter picture URL" value={poster} onChange={event => setPoster(event.target.value)}/>
+          </Form.Group>
             </div>
           </div>
           <Form.Group className="d-flex mt-3 justify-content-end">
