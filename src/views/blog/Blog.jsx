@@ -5,6 +5,7 @@ import BlogAuthor from "../../components/blog/blog-author/BlogAuthor";
 import BlogLike from "../../components/likes/BlogLike";
 import Spinner from "react-bootstrap/Spinner";
 import "./styles.css";
+
 const Blog = () => {
   const [blog, setBlog] = useState({});
   const [loading, setLoading] = useState(true);
@@ -12,10 +13,11 @@ const Blog = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { id } = params;
-    console.log("this is the id", id);
+    let { blogPostId } = params;
+    console.log("this is the id", blogPostId);
+
     const fetching = async () => {
-      let response = await fetch(`http://localhost:3001/blogPosts/${id}`);
+      let response = await fetch(process.env.REACT_APP_BE_URL + `/blogPosts/${blogPostId}`);
       if (response.ok) {
         const fetchedData = await response.json();
         console.log(fetchedData);
@@ -31,7 +33,7 @@ const Blog = () => {
     fetching();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  //----------------------
+
   if (loading) {
     return (
       <div
@@ -62,7 +64,7 @@ const Blog = () => {
               <div className="text-center d-flex justify-content-between">
                 <div>
                   <div>{new Date(blog.createdAt).toLocaleDateString()}</div>
-                  {`${blog.readTime.value} ${blog.readTime.unit} read`}
+                  {/* {`${blog.readTime.value} ${blog.readTime.unit} read`} */}
                 </div>
               </div>
             </div>

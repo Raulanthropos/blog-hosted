@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import BlogAuthor from "../blog-author/BlogAuthor";
 import "./styles.css";
 const SideBlogItem = (props) => {
-  const { title, cover, author, id, readTime, content, createdAt } = props;
+  const { title, cover, author, _id, readTime, content, createdAt } = props;
 
   return (
     <>
-      <Link to={`/blogs/${id}`} id="blog-link" className="text-light">
+      <Link to={`/blogs/${_id}`} id="blog-link" className="text-light">
         <Row className="g-0" id="main-row">
           <Col xs={12}>
             <Card className="bg-dark">

@@ -4,6 +4,7 @@ import "./styles.css";
 
 const BlogAuthor = (props) => {
   const { name, avatar, value, unit } = props;
+  console.log("props", props)
   return (
     <Row>
       <Col xs={12} className="d-flex align-items-center justify-content-start">

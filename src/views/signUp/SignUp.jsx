@@ -52,7 +52,7 @@ const SignUp = (props) => {
         "Content-Type": "application/json",
       },
     };
-    fetch("http://localhost:3001/authors/register", options)
+    fetch(process.env.REACT_APP_BE_URL + "/authors/register", options)
       .then((response) => response.json())
       .then((s) => {
         console.log(s);
@@ -144,7 +144,7 @@ const SignUp = (props) => {
                   onChange={(e) => avatarChangeHandler(e)}
                 />
               </div>
-              <div className="justify-content-start w-50">
+              {/* <div className="justify-content-start w-50">
                 <Form.Label>Upload Your Profile Background:</Form.Label>
 
                 <Form.Control
@@ -152,7 +152,7 @@ const SignUp = (props) => {
                   // onChange={(e) => posterChangeHandler(e)}
                   accept=".jpg, .jpeg"
                 />
-              </div>
+              </div> */}
             </div>
             <div className="d-flex justify-content-end">
               <button

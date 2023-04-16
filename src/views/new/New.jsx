@@ -11,7 +11,7 @@ const NewBlogPost = (props) => {
   let [loading, setLoading] = useState(false);
   // const [poster, setPoster] = useState([]);
   const [title, setTitle] = useState("");
-  const [email, setEmail] = useState("");
+  const [category, setCategory] = useState("");
   const [name, setName] = useState("");
   const [value, setValue] = useState("");
   const user = useSelector((state) => state.loadedProfile.user);
@@ -34,7 +34,7 @@ const NewBlogPost = (props) => {
   }, [editorState]);
   const itemToSend = {
     title: title,
-    email: email,
+    category: category,
     content: `${html}`,
     author: {
       name: username,
@@ -69,7 +69,7 @@ const NewBlogPost = (props) => {
         "Content-Type": "application/json",
       },
     };
-    fetch("http://localhost:3001/blogPosts", options)
+    fetch(process.env.REACT_APP_BE_URL + "/blogPosts", options)
       .then((response) => response.json())
           .then((s) => {
             if (s) {
@@ -113,13 +113,13 @@ const NewBlogPost = (props) => {
               </Form.Group>
             </Col>
             <Col>
-              <Form.Group controlId="email" className="mt-3 ">
-                <Form.Label>Nickame</Form.Label>
+              <Form.Group controlId="category" className="mt-3 ">
+                <Form.Label>Category</Form.Label>
                 <Form.Control
                   size="md"
-                  placeholder="@jasonbourne"
-                  value={user.email}
-                  onChange={(e) => onChangeHandler(e.target.value, setEmail)}
+                  placeholder="eg. Politics"
+                  value={category}
+                  onChange={(e) => onChangeHandler(e.target.value, setCategory)}
                 />
               </Form.Group>
             </Col>

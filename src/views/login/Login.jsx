@@ -14,19 +14,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
 
-  React.useEffect(() => {
-    fetchDatabase();
-  }, []);
-
   const [responseJSON, setResponseJSON] = useState([]);
 
   const user = useSelector((state) => state.loadedProfile.user)
-
-  const fetchDatabase = async () => {
-    const response = await fetch("http://localhost:3001/authors");
-    const responseUnboxed = await response.json();
-    setResponseJSON(responseUnboxed);
-  };
 
   const handleSubmit = async (event) => {
     event.preventDefault()

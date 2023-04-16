@@ -135,11 +135,11 @@ const Profile = () => {
                   id="background-image"
                 />
               </div> */}
-              <div className=" position-absolute " style={{ bottom: "-30%" }}>
+              <div className=" position-absolute " style={{ bottom: "-500px" }}>
                 <img
                   src={user.avatar}
                   className="rounded-circle"
-                  style={{ objectFit: "cover" }}
+                  style={{ objectFit: "cover"}}
                   id="profile-picture"
                 />
               </div>
