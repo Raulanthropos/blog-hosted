@@ -66,7 +66,7 @@ const SignUp = (props) => {
                 });
 
                 setLoading(false);
-                window.location.replace("/home");
+                window.location.replace("/");
               }
             })
   };

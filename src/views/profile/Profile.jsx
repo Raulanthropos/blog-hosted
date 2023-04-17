@@ -13,17 +13,17 @@ import { SET_USER } from "../../redux/actions";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-// import { getBlogs } from "../../redux/actions";
-// import { FiEdit2 } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 function MyVerticallyCenteredModal(props) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.loadedProfile.user);
   const logout = () => {
     dispatch({
       type: SET_USER,
       payload: [],
-    }).then(window.location.replace("/"));
+    }).then(setTimeout(() => navigate("/"), 2000));
   };
   function hidePassword() {
     console.log("yes");
@@ -50,29 +50,22 @@ function MyVerticallyCenteredModal(props) {
           <Form.Control
             placeholder="name"
             aria-label="exiting_user"
-            value={user.name}
+            value={""}
           />
         </InputGroup>
         <InputGroup className="mt-1 mb-1">
           <Form.Control
-            placeholder="name"
+            placeholder="surname"
             aria-label="exiting_user"
-            value={user.surname}
+            value={""}
           />
         </InputGroup>
-        {/* <InputGroup className="mt-1 mb-1">
-          <Form.Control
-            placeholder="name"
-            aria-label="exiting_user"
-            value={user.nickname}
-          />
-        </InputGroup> */}
         <InputGroup className="mt-1 mb-1">
           <Form.Control
-            placeholder="name"
+            placeholder="password"
             type="password"
             aria-label="exiting_user"
-            value={user.password}
+            value={""}
             className="w-100"
             id="myInput"
           />
@@ -82,8 +75,11 @@ function MyVerticallyCenteredModal(props) {
           </div>
         </InputGroup>
         <div className="text-center mt-4">
+          <Button className="btn btn-primary" onClick={logout}>
+            Save changes
+          </Button>
           <Button className="btn btn-danger" onClick={logout}>
-            Log-out
+            Logout
           </Button>
         </div>
       </Modal.Body>
@@ -91,7 +87,6 @@ function MyVerticallyCenteredModal(props) {
   );
 }
 const Profile = () => {
-  const dispatch = useDispatch();
   const [modalShow, setModalShow] = React.useState(false);
   const blogs = useSelector((state) => state.loadedProfile.blogs);
   const user = useSelector((state) => state.loadedProfile.user);
@@ -151,7 +146,6 @@ const Profile = () => {
           id="content-under-images"
         >
           <div className="text-center">
-            {/* <h3>{user.nickname}</h3> */}
             <h6>
               {user.name} {user.surname}
             </h6>
@@ -169,9 +163,6 @@ const Profile = () => {
             onClick={() => setModalShow(true)}
           >
             Settings
-          </Button>
-          <Button variant="dark" className="m-1 w-25" id="setandedit">
-            Edit
           </Button>
           <MyVerticallyCenteredModal
             show={modalShow}

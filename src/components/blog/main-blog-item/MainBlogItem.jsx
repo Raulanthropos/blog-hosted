@@ -1,16 +1,17 @@
 import React from "react";
-import { Card, Row, Col, Button } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import BlogAuthor from "../blog-author/BlogAuthor";
 import "./styles.css";
 const MainBlogItem = (props) => {
-  const { title, author, _id, readTime, content } = props;
+  const { title, authors, _id, readTime, content, cover } = props;
+  console.log("This is the title in main", title, "This is the author in main", authors, "This is props in main", props)
   return (
     <Link to={`/blogs/${_id}`} id="blog-link" style={{ body: "unset" }}>
       <Card className="h-100 bg-dark text-light">
         <Card.Body>
           <div className="d-flex justify-content-between mb-3">
-            <BlogAuthor {...author} {...readTime} />
+            <BlogAuthor {...authors} {...readTime} />
 
             <Button
               variant="outline-secondary"
@@ -22,6 +23,14 @@ const MainBlogItem = (props) => {
             </Button>
           </div>
           <Card.Title className="text-truncate">{title}</Card.Title>
+          <div>
+          <Card.Img
+                    src={cover}
+                    alt="image1"
+                    className="w-100 h-100"
+                    style={{ objectFit: "cover", aspectRatio: 3 / 2 }}
+                  />
+                  </div>
           <div id="text-main-blog">
             <p
               dangerouslySetInnerHTML={{

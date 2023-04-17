@@ -32,7 +32,7 @@ const SideBlogItem = (props) => {
                     ></p>
                     <small>
                       <p className="text-muted card-text text-truncate">
-                        {new Date(createdAt).toLocaleDateString()} •{" "}
+                        {new Date(createdAt).toLocaleDateString("el-GR")} •{" "}
                         {/* {readTime.value} {readTime.unit}('s) Read */}
                       </p>
                     </small>

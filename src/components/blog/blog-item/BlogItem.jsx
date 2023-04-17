@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import BlogAuthor from "../blog-author/BlogAuthor";
 import "./styles.css";
 const BlogItem = (props) => {
-  const { title, author, id, readTime } = props;
-
+  const { title, authors, id, readTime } = props;
+  console.log("These are the authors in blogitem", authors, "This is the id in blogitem", id, "This is the readtime in blogitem", readTime, "This is the title in blogitem", title)
   return (
     <Link to={`/blogs/${id}`} id="blog-link">
       <Card className="blog-card bg-dark text-light" id="blog-link">
@@ -21,7 +21,7 @@ const BlogItem = (props) => {
         <Card.Footer>
           <Row className="d-flex align-items-center justify-content-between">
             <Col xs={5}>
-              <BlogAuthor {...author} {...readTime} />
+              <BlogAuthor {...authors} {...readTime} />
             </Col>
             <Col xs={6}>
               {/* <p id="no-p-no-m" className="text-truncate">

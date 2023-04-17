@@ -63,7 +63,7 @@ const Blog = () => {
               </div>
               <div className="text-center d-flex justify-content-between">
                 <div>
-                  <div>{new Date(blog.createdAt).toLocaleDateString()}</div>
+                  <div>{new Date(blog.createdAt).toLocaleDateString("el-GR")}</div>
                   {/* {`${blog.readTime.value} ${blog.readTime.unit} read`} */}
                 </div>
               </div>
