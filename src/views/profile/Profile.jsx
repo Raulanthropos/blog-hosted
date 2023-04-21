@@ -9,7 +9,7 @@ import {
 } from "react-bootstrap";
 import "./styles.css";
 import BlogItem from "../../components/blog/blog-item/BlogItem";
-import { SET_USER } from "../../redux/actions";
+import { SET_USER, updateAuthor } from "../../redux/actions";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -35,6 +35,10 @@ function MyVerticallyCenteredModal(props) {
     }
   }
 
+  const editSettings = () => {
+    dispatch(updateAuthor({_id: user._id, name: user.name, surname: user.surname, password: user.password}));
+  };
+
   return (
     <Modal
       {...props}
@@ -50,14 +54,14 @@ function MyVerticallyCenteredModal(props) {
           <Form.Control
             placeholder="name"
             aria-label="exiting_user"
-            value={""}
+            defaultValue={user.name}
           />
         </InputGroup>
         <InputGroup className="mt-1 mb-1">
           <Form.Control
             placeholder="surname"
             aria-label="exiting_user"
-            value={""}
+            defaultValue={user.surname}
           />
         </InputGroup>
         <InputGroup className="mt-1 mb-1">
@@ -65,7 +69,7 @@ function MyVerticallyCenteredModal(props) {
             placeholder="password"
             type="password"
             aria-label="exiting_user"
-            value={""}
+            defaultValue={user.password}
             className="w-100"
             id="myInput"
           />
@@ -75,7 +79,7 @@ function MyVerticallyCenteredModal(props) {
           </div>
         </InputGroup>
         <div className="text-center mt-4">
-          <Button className="btn btn-primary" onClick={logout}>
+          <Button className="btn btn-primary" onClick={editSettings}>
             Save changes
           </Button>
           <Button className="btn btn-danger" onClick={logout}>
@@ -103,15 +107,7 @@ const Profile = () => {
             id="full-screen"
           >
             <div className="text-center">
-              <h1>You're not logged in.</h1>
-
-              <Button
-                variant="light"
-                className="m-1 w-50"
-                onClick={() => window.location.replace("/")}
-              >
-                Login
-              </Button>
+              <h1>You're not logged in. Redirecting...</h1>
             </div>
           </Container>
         </div>

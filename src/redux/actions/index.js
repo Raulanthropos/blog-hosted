@@ -2,79 +2,79 @@ export const FETCH_BLOGS = "FETCH_BLOGS";
 export const ADD_POST = "ADD_POST";
 export const SET_ID = "SET_ID";
 export const SET_USER = "SET_USER";
-export const SET_ACCESS_TOKEN="SET_ACCESS_TOKEN";
-export const SET_AUTHENTICATED="SET_AUTHENTICATED";
+export const SET_ACCESS_TOKEN = "SET_ACCESS_TOKEN";
+export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
 
 const baseUrl = process.env.REACT_APP_BE_URL;
 
 export const setAccessToken = (accessToken) => ({
   type: SET_ACCESS_TOKEN,
-  payload: accessToken
-})
+  payload: accessToken,
+});
 
 export const getAccessToken = (loggingInUser) => {
-  console.log(baseUrl)
+  console.log(baseUrl);
   return async (dispatch) => {
     const options = {
       method: "POST",
       body: JSON.stringify(loggingInUser),
       headers: {
-        "Content-Type": "application/json"
-      }
-    }
-    console.log("options", options)
+        "Content-Type": "application/json",
+      },
+    };
+    console.log("options", options);
     try {
-      console.log("---------inside the getAccessToken action----------")
-      const response = await fetch(baseUrl + "/authors/login", options)
+      console.log("---------inside the getAccessToken action----------");
+      const response = await fetch(baseUrl + "/authors/login", options);
       if (response.ok) {
-        const tokens = await response.json()
-        const accessToken = await tokens.accessToken
+        const tokens = await response.json();
+        const accessToken = await tokens.accessToken;
 
         if (accessToken) {
-          console.log("---------access token created----------")
+          console.log("---------access token created----------");
           dispatch({
             type: SET_ACCESS_TOKEN,
-            payload: accessToken
-          })
-          localStorage.setItem("accessToken", accessToken)
+            payload: accessToken,
+          });
+          localStorage.setItem("accessToken", accessToken);
           dispatch({
             type: SET_AUTHENTICATED,
-            payload: true
-          })
+            payload: true,
+          });
           try {
             const opts = {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
-                Authorization: "Bearer " + accessToken
-              }
-            }
-            const userResponse = await fetch(baseUrl + "/authors/me", opts)
+                Authorization: "Bearer " + accessToken,
+              },
+            };
+            const userResponse = await fetch(baseUrl + "/authors/me", opts);
             if (userResponse.ok) {
-              const user = await userResponse.json()
+              const user = await userResponse.json();
 
               dispatch({
                 type: SET_USER,
-                payload: user
-              })
+                payload: user,
+              });
             } else {
-              console.log("error getting the user")
+              console.log("error getting the user");
             }
           } catch (error) {
-            console.log("error in trycatch", error)
+            console.log("error in trycatch", error);
           }
         } else {
-          console.log("access token not created")
+          console.log("access token not created");
         }
       } else {
-        const errorResponse = await response.json()
-        console.log("error logging in user", errorResponse.message)
+        const errorResponse = await response.json();
+        console.log("error logging in user", errorResponse.message);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-}
+  };
+};
 
 export const getBlogs = () => {
   return async (dispatch, getState) => {
@@ -118,6 +118,39 @@ export const addPost = (token, post) => {
       }
     } catch (error) {
       console.log("Error while adding new post", error);
+    }
+  };
+};
+
+export const updateAuthor = (author) => {
+  return async (dispatch) => {
+    const opts = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify({
+        name: author.name,
+        surname: author.surname,
+        password: author.password,
+      }),
+    };
+    try {
+      const response = await fetch(baseUrl + `/authors/${author._id}`, opts);
+
+      if (response.ok) {
+        const updatedAuthor = await response.json();
+        console.log("updatedAuthor", updatedAuthor);
+        dispatch({
+          type: SET_USER,
+          payload: updatedAuthor,
+        });
+      } else {
+        console.log("Error updating user");
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 };
