@@ -17,13 +17,10 @@ const Search = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
   };
-  useEffect(() => {
-    console.log(query);
-  });
   const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
-  const blogs = useSelector((state) => state.loadedProfile.blogs);
+  const blogs = useSelector((state) => state.loadedProfile.blogPosts);
 
   React.useEffect(() => {
     dispatch(getBlogs()).then(setLoading(false));

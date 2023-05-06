@@ -8,27 +8,6 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 const NavBar = () => {
   const user = useSelector((state) => state.loadedProfile.user);
-  // if (user.length === 0) {
-  //   return (
-  //     <>
-  //       <Navbar expand="lg" id="desktop-nav" className="w-100 p-3">
-  //         <Container className="d-flex justify-content-center">
-  //           <Navbar.Brand
-  //             as={Link}
-  //             to="/home"
-  //             className="d-flex text-light"
-  //             id="navbar-logo"
-  //           >
-  //             <h2 className="m-0 p-0 me-2">ComfyBlog</h2>
-  //             <h2 className="m-0 p-0">
-  //               <GiSecretBook size={30} />
-  //             </h2>
-  //           </Navbar.Brand>
-  //         </Container>
-  //       </Navbar>
-  //     </>
-  //   );
-  // } else {
     return (
       <Navbar expand="lg" id="desktop-nav" className="w-100 p-3">
         <Container>
@@ -43,7 +22,6 @@ const NavBar = () => {
               <GiSecretBook size={30} />
             </h2>
           </Navbar.Brand>
-
           <Navbar.Toggle
             aria-controls="basic-navbar-nav"
             className="hide-on-mobile"

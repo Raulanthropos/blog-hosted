@@ -4,14 +4,14 @@ import { Link } from "react-router-dom";
 import BlogAuthor from "../blog-author/BlogAuthor";
 import "./styles.css";
 const MainBlogItem = (props) => {
-  const { title, authors, _id, readTime, content, cover } = props;
+  const { title, authors, _id, content, cover } = props;
   console.log("This is the title in main", title, "This is the author in main", authors, "This is props in main", props)
   return (
     <Link to={`/blogs/${_id}`} id="blog-link" style={{ body: "unset" }}>
       <Card className="h-100 bg-dark text-light">
         <Card.Body>
           <div className="d-flex justify-content-between mb-3">
-            <BlogAuthor {...authors} {...readTime} />
+            <BlogAuthor {...authors}/>
 
             <Button
               variant="outline-secondary"

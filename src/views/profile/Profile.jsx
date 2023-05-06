@@ -92,7 +92,7 @@ function MyVerticallyCenteredModal(props) {
 }
 const Profile = () => {
   const [modalShow, setModalShow] = React.useState(false);
-  const blogs = useSelector((state) => state.loadedProfile.blogs);
+  const blogs = useSelector((state) => state.loadedProfile.blogPosts);
   const user = useSelector((state) => state.loadedProfile.user);
   console.log("user", user, "blogs", blogs)
   const full_name = user.name + " " + user.surname;

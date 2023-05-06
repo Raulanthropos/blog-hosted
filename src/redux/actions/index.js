@@ -82,7 +82,7 @@ export const getBlogs = () => {
       const response = await fetch(baseUrl + "/blogPosts");
       if (response.ok) {
         const blogs = await response.json();
-        console.log("Blogs are here", blogs);
+        // console.log("Blogs are here", blogs);
         dispatch({
           type: FETCH_BLOGS,
           payload: blogs,
