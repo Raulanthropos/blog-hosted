@@ -1,7 +1,8 @@
 export const FETCH_BLOGS = "FETCH_BLOGS";
 export const ADD_POST = "ADD_POST";
 export const SET_ID = "SET_ID";
-export const SET_USER = "SET_USER";
+export const SET_USER = "SET_UPDATED_USER";
+export const SET_UPDATED_USER = "SET_UPDATED_USER";
 export const SET_ACCESS_TOKEN = "SET_ACCESS_TOKEN";
 export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
 
@@ -54,7 +55,7 @@ export const getAccessToken = (loggingInUser) => {
               const user = await userResponse.json();
 
               dispatch({
-                type: SET_USER,
+                type: SET_UPDATED_USER,
                 payload: user,
               });
             } else {
@@ -124,6 +125,11 @@ export const addPost = (token, post) => {
 
 export const updateAuthor = (author) => {
   return async (dispatch) => {
+    if (!author?._id) {
+      console.log("Error: author._id is undefined");
+      return;
+    }
+
     const opts = {
       method: "PUT",
       headers: {
@@ -131,6 +137,7 @@ export const updateAuthor = (author) => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
+        _id: author._id,
         name: author.name,
         surname: author.surname,
         password: author.password,
@@ -143,7 +150,7 @@ export const updateAuthor = (author) => {
         const updatedAuthor = await response.json();
         console.log("updatedAuthor", updatedAuthor);
         dispatch({
-          type: SET_USER,
+          type: SET_UPDATED_USER,
           payload: updatedAuthor,
         });
       } else {

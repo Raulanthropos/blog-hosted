@@ -1,10 +1,16 @@
-import { FETCH_BLOGS, SET_ID, SET_USER, ADD_POST, SET_ACCESS_TOKEN } from "../actions";
+import { FETCH_BLOGS, SET_ID, SET_USER, ADD_POST, SET_ACCESS_TOKEN, SET_UPDATED_USER } from "../actions";
 
 const initialState = {
   blogPosts: [],
   isLoading: true,
   id: "",
-  user: [],
+  user: null,
+  updatedUser: { // set an initial value for updatedUser
+    _id: "",
+    name: "",
+    surname: "",
+    password: "",
+  },
   accessToken: localStorage.getItem("accessToken"),
 };
 
@@ -28,7 +34,6 @@ const mainReducer = (state = initialState, action) => {
         isLoading: false,
       };
     case SET_ID: {
-      console.log(action.payload);
       return {
         ...state,
         id: action.payload,
@@ -36,10 +41,16 @@ const mainReducer = (state = initialState, action) => {
       };
     }
     case SET_USER: {
-      console.log(action.payload);
       return {
         ...state,
         user: action.payload,
+        isLoading: false,
+      };
+    }
+    case SET_UPDATED_USER: {
+      return {
+        ...state,
+        updatedUser: action.payload,
         isLoading: false,
       };
     }

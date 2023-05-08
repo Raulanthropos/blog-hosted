@@ -10,15 +10,18 @@ import {
 import "./styles.css";
 import BlogItem from "../../components/blog/blog-item/BlogItem";
 import { SET_USER, updateAuthor } from "../../redux/actions";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 function MyVerticallyCenteredModal(props) {
+  const [modalShow, setModalShow] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.loadedProfile.user);
+  const updatedUser = useSelector((state) => state.loadedProfile.updatedUser);
+  console.log("This is the updated user", updatedUser)
   const logout = () => {
     dispatch({
       type: SET_USER,
@@ -35,8 +38,19 @@ function MyVerticallyCenteredModal(props) {
     }
   }
 
-  const editSettings = () => {
-    dispatch(updateAuthor({_id: user._id, name: user.name, surname: user.surname, password: user.password}));
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const name = document.getElementById("name").value;
+    const surname = document.getElementById("surname").value;
+    const password = document.getElementById("password").value;
+    dispatch(updateAuthor({ ...updatedUser, ...{ name, surname, password } }))
+.then(() => {
+      setModalShow(false);
+    })
+    .catch(error => {
+      setModalShow(false);
+      console.log(error);
+    });
   };
 
   return (
@@ -50,42 +64,46 @@ function MyVerticallyCenteredModal(props) {
         <Modal.Title id="contained-modal-title-vcenter">Settings</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <InputGroup className="mt-1 mb-1">
-          <Form.Control
-            placeholder="name"
-            aria-label="exiting_user"
-            defaultValue={user.name}
-          />
-        </InputGroup>
-        <InputGroup className="mt-1 mb-1">
-          <Form.Control
-            placeholder="surname"
-            aria-label="exiting_user"
-            defaultValue={user.surname}
-          />
-        </InputGroup>
-        <InputGroup className="mt-1 mb-1">
-          <Form.Control
-            placeholder="password"
-            type="password"
-            aria-label="exiting_user"
-            defaultValue={user.password}
-            className="w-100"
-            id="myInput"
-          />
-          <div className="w-50 mt-1">
-            <input type="checkbox" onClick={() => hidePassword()} /> Show
-            Password{" "}
+        <Form onSubmit={handleSubmit}>
+          <InputGroup className="mt-1 mb-1">
+            <Form.Control
+              placeholder="name"
+              aria-label="exiting_user"
+              defaultValue={user.name}
+              id="name"
+            />
+          </InputGroup>
+          <InputGroup className="mt-1 mb-1">
+            <Form.Control
+              placeholder="surname"
+              aria-label="exiting_user"
+              defaultValue={user.surname}
+              id="surname"
+            />
+          </InputGroup>
+          <InputGroup className="mt-1 mb-1">
+            <Form.Control
+              placeholder="password"
+              type="password"
+              aria-label="exiting_user"
+              defaultValue={user.password}
+              className="w-100"
+              id="password"
+            />
+            <div className="w-50 mt-1">
+              <input type="checkbox" onClick={() => hidePassword()} /> Show
+              Password{" "}
+            </div>
+          </InputGroup>
+          <div className="text-center mt-4">
+            <Button className="btn btn-primary" type="submit">
+              Save changes
+            </Button>
+            <Button className="btn btn-danger" onClick={logout}>
+              Logout
+            </Button>
           </div>
-        </InputGroup>
-        <div className="text-center mt-4">
-          <Button className="btn btn-primary" onClick={editSettings}>
-            Save changes
-          </Button>
-          <Button className="btn btn-danger" onClick={logout}>
-            Logout
-          </Button>
-        </div>
+        </Form>
       </Modal.Body>
     </Modal>
   );
@@ -94,7 +112,7 @@ const Profile = () => {
   const [modalShow, setModalShow] = React.useState(false);
   const blogs = useSelector((state) => state.loadedProfile.blogPosts);
   const user = useSelector((state) => state.loadedProfile.user);
-  console.log("user", user, "blogs", blogs)
+  console.log("The user id is this", user._id)
   const full_name = user.name + " " + user.surname;
   const my_blogs = blogs?.filter((blog) => blog.author === full_name);
 
@@ -119,13 +137,6 @@ const Profile = () => {
         <Row className="d-flex justify-content-center mb-5">
           <Col xs={12} id="profile-pictures">
             <div className="position-relative w-100 d-flex justify-content-center">
-              {/* <div className="w-100">
-                <img
-                  src={user.background}
-                  className="w-100 rounded-4"
-                  id="background-image"
-                />
-              </div> */}
               <div className=" position-absolute " style={{ bottom: "-500px" }}>
                 <img
                   src={user.avatar}
@@ -173,7 +184,6 @@ const Profile = () => {
             <a className="no-underline ">Saved</a>
           </div>
         </Container>
-
         <Container>
           <Row>
             {my_blogs?.map((blog) => (
