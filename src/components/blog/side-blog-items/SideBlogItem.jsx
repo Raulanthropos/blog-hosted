@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 import BlogAuthor from "../blog-author/BlogAuthor";
 import "./styles.css";
 const SideBlogItem = (props) => {
-  const { title, cover, author, _id, readTime, content, createdAt } = props;
-
+  const { title, cover, authors, _id, readTime, content, createdAt } = props;
   return (
     <>
       <Link to={`/blogs/${_id}`} id="blog-link" className="text-light">
@@ -24,8 +23,9 @@ const SideBlogItem = (props) => {
                 <Col xs={12} sm={12} md={12} lg={7}>
                   <Card.Body>
                     <div className="mb-2">
-                      <BlogAuthor {...author} {...readTime} />
+                      <BlogAuthor name={authors[0]?.name} surname = {authors[0]?.surname} avatar={authors[0]?.avatar} readTime={readTime} />
                     </div>
+
                     <p
                       className="text-truncate text-light"
                       dangerouslySetInnerHTML={{ __html: title || content }}

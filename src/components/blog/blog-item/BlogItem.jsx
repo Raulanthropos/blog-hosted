@@ -5,7 +5,8 @@ import BlogAuthor from "../blog-author/BlogAuthor";
 import "./styles.css";
 const BlogItem = (props) => {
   const { title, authors, _id, readTime, cover } = props;
-  // console.log("These are the authors in blogitem", authors, "This is the id in blogitem", _id, "This is the readtime in blogitem", readTime, "This is the title in blogitem", title, "This is the cover", cover)
+  console.log("These are the authors in blogitem", authors, "This is readtime", readTime)
+  console.log("This is surname", authors[0]?.surname)
   return (
     <Link to={`/blogs/${_id}`} id="blog-link">
       <Card className="blog-card bg-dark text-light" id="blog-link">
@@ -21,7 +22,7 @@ const BlogItem = (props) => {
         <Card.Footer>
           <Row className="d-flex align-items-center justify-content-between">
             <Col xs={5}>
-              <BlogAuthor {...authors} {...readTime} />
+              <BlogAuthor name = {authors[0]?.name} surname = {authors[0]?.surname} avatar = {authors[0]?.avatar} readTime={authors[0]?.readTime} />
             </Col>
             <Col xs={6}>
               <p id="no-p-no-m" className="text-truncate">

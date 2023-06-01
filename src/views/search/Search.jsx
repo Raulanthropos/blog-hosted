@@ -22,7 +22,7 @@ const Search = () => {
   const dispatch = useDispatch();
   const blogs = useSelector((state) => state.loadedProfile.blogPosts);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(getBlogs()).then(setLoading(false));
     //eslint-disable-next-line
   }, []);

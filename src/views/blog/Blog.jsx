@@ -14,14 +14,13 @@ const Blog = () => {
 
   useEffect(() => {
     let { blogPostId } = params;
-    console.log("this is the id", blogPostId);
 
     const fetching = async () => {
       let response = await fetch(process.env.REACT_APP_BE_URL + `/blogPosts/${blogPostId}`);
       if (response.ok) {
         const fetchedData = await response.json();
-        console.log(fetchedData);
         setBlog(fetchedData);
+        console.log("This is the blog", blog)
         setLoading(false);
       } else {
         console.log("error");
@@ -59,7 +58,7 @@ const Blog = () => {
             <h1 className="blog-details-title">{blog.title}</h1>
             <div className="d-flex align-items-center justify-content-between mb-4">
               <div className="blog-details-author">
-                <BlogAuthor {...blog.author} />
+                <BlogAuthor name = {blog.authors[0]?.name} surname = {blog.authors[0]?.surname} avatar = {blog.authors[0]?.avatar}/>
               </div>
               <div className="text-center d-flex justify-content-between">
                 <div>

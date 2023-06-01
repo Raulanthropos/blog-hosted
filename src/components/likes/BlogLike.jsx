@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineLike } from "react-icons/ai";
 import { Button } from "react-bootstrap";
-const yourUserId = "123";
+import { useSelector } from "react-redux";
+
 export default function BlogLike({ defaultLikes, onChange }) {
+  const yourUserId = useSelector((state) => state.loadedProfile.user);
   const [likes, setLikes] = useState(defaultLikes);
   const iLikedThisArticle = likes.includes(yourUserId);
   const toggleLike = () => {
@@ -23,7 +25,7 @@ export default function BlogLike({ defaultLikes, onChange }) {
         onClick={toggleLike}
         variant={iLikedThisArticle ? "dark" : "dark-outline"}
       >
-        <AiOutlineLike /> {`${likes.length}  like`}
+        <AiOutlineLike /> {`${likes.length - 1}  like`}
       </Button>{" "}
     </div>
   );

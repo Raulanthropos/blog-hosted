@@ -123,10 +123,10 @@ export const addPost = (token, post) => {
   };
 };
 
-export const updateAuthor = (author) => {
+export const updateAuthor = (user) => {
   return async (dispatch) => {
-    if (!author?._id) {
-      console.log("Error: author._id is undefined");
+    if (!user?._id) {
+      console.log("Error: user._id is undefined");
       return;
     }
 
@@ -137,14 +137,14 @@ export const updateAuthor = (author) => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
-        _id: author._id,
-        name: author.name,
-        surname: author.surname,
-        password: author.password,
+        _id: user._id,
+        name: user.name,
+        surname: user.surname,
+        password: user.password,
       }),
     };
     try {
-      const response = await fetch(baseUrl + `/authors/${author._id}`, opts);
+      const response = await fetch(baseUrl + `/authors/${user._id}`, opts);
 
       if (response.ok) {
         const updatedAuthor = await response.json();
