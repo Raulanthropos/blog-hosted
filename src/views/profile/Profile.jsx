@@ -112,10 +112,11 @@ const Profile = () => {
   const [modalShow, setModalShow] = React.useState(false);
   const blogs = useSelector((state) => state.loadedProfile.blogPosts);
   const user = useSelector((state) => state.loadedProfile.user);
-  console.log("The user id is this", user?._id)
-  const full_name = user?.name + " " + user?.surname;
+  const navigate = useNavigate();
+  console.log("The user id is this", user._id)
+  const full_name = user.name + " " + user.surname;
   const my_blogs = blogs?.filter((blog) => blog.author === full_name);
-  console.log("This is the avatar link", user?.avatar)
+  console.log("This is the avatar link", user.avatar)
 
   if (user?.length === 0) {
     return (
@@ -127,6 +128,7 @@ const Profile = () => {
           >
             <div className="text-center">
               <h1>You're not logged in. Redirecting...</h1>
+              <p style={{color: "#141414"}}>{setTimeout(() => navigate("/"), 2000)}</p>
             </div>
           </Container>
         </div>

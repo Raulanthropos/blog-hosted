@@ -117,10 +117,9 @@ const NavBar = () => {
 
               <Link to="/profile">
                 <img
-                  src={user?.avatar}
+                  src={user && user.avatar ? user.avatar : "https://as2.ftcdn.net/v2/jpg/00/97/00/09/1000_F_97000908_wwH2goIihwrMoeV9QF3BW6HtpsVFaNVM.jpg"}
                   style={{ width: "40px", height: "40px", borderRadius: "50%" }}
                   className="hide-on-mobile hide-on-md"
-                  alt="user-avatar"
                 />
               </Link>
             </Nav>
