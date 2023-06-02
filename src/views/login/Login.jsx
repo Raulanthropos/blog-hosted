@@ -13,9 +13,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-
   const [responseJSON, setResponseJSON] = useState([]);
-
+  const [errorMessage, setErrorMessage] = useState("");
   const user = useSelector((state) => state.loadedProfile.user)
 
   const handleSubmit = async (event) => {
@@ -25,9 +24,18 @@ const Login = () => {
       password: password
     }
     console.log("logging in")
-    dispatch(getAccessToken(credentials))
-    setLoggedIn(true);
-  };
+    try {
+      await new Promise((resolve, reject) => {
+        dispatch(getAccessToken(credentials, resolve, reject))
+          .then(resolve)
+          .catch(reject);
+      });
+      setLoggedIn(true);
+    } catch (error) {
+        setErrorMessage("Incorrect email or password. Please try again.");
+    }
+
+  }
   const redirectme = () => {
     // setTimeout(() => {
     //
@@ -55,6 +63,7 @@ const Login = () => {
   } else {
     return (
       <Container className="w-75 text-light mt-5">
+        {errorMessage && <div className="text-danger mb-3">{errorMessage}</div>}
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>

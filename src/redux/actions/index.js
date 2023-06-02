@@ -13,7 +13,7 @@ export const setAccessToken = (accessToken) => ({
   payload: accessToken,
 });
 
-export const getAccessToken = (loggingInUser) => {
+export const getAccessToken = (loggingInUser, resolve, reject) => {
   console.log(baseUrl);
   return async (dispatch) => {
     const options = {
@@ -57,24 +57,31 @@ export const getAccessToken = (loggingInUser) => {
                 type: SET_UPDATED_USER,
                 payload: user,
               });
+              resolve(); // Resolve the custom promise here
             } else {
               console.log("error getting the user");
+              reject(new Error("Error getting the user")); // Reject the custom promise with an error
             }
           } catch (error) {
             console.log("error in trycatch", error);
+            reject(error); // Reject the custom promise with the caught error
           }
         } else {
           console.log("access token not created");
+          reject(new Error("Access token not created")); // Reject the custom promise with an error
         }
       } else {
         const errorResponse = await response.json();
         console.log("error logging in user", errorResponse.message);
+        reject(new Error("Error logging in user")); // Reject the custom promise with an error
       }
     } catch (error) {
       console.log(error);
+      reject(error); // Reject the custom promise with the caught error
     }
   };
 };
+
 
 export const getBlogs = () => {
   return async (dispatch, getState) => {
