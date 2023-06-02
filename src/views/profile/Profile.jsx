@@ -113,10 +113,10 @@ const Profile = () => {
   const blogs = useSelector((state) => state.loadedProfile.blogPosts);
   const user = useSelector((state) => state.loadedProfile.user);
   const navigate = useNavigate();
-  console.log("The user id is this", user._id)
-  const full_name = user.name + " " + user.surname;
+  console.log("The user id is this", user?._id)
+  const full_name = user?.name + " " + user?.surname;
   const my_blogs = blogs?.filter((blog) => blog.author === full_name);
-  console.log("This is the avatar link", user.avatar)
+  console.log("This is the avatar link", user?.avatar)
 
   if (user?.length === 0) {
     return (
@@ -157,7 +157,7 @@ const Profile = () => {
         >
           <div className="text-center">
             <h6>
-              {user.name} {user.surname}
+              {user?.name} {user?.surname}
             </h6>
             <h6>0 followers • 0 following</h6>
             <h6 style={{ fontSize: "14px" }} className="text-muted">
