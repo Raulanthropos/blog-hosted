@@ -69,7 +69,7 @@ function MyVerticallyCenteredModal(props) {
             <Form.Control
               placeholder="name"
               aria-label="exiting_user"
-              defaultValue={user.name}
+              defaultValue={user?.name}
               id="name"
             />
           </InputGroup>
@@ -77,7 +77,7 @@ function MyVerticallyCenteredModal(props) {
             <Form.Control
               placeholder="surname"
               aria-label="exiting_user"
-              defaultValue={user.surname}
+              defaultValue={user?.surname}
               id="surname"
             />
           </InputGroup>
@@ -86,7 +86,7 @@ function MyVerticallyCenteredModal(props) {
               placeholder="password"
               type="password"
               aria-label="exiting_user"
-              defaultValue={user.password}
+              defaultValue={user?.password}
               className="w-100"
               id="password"
             />
