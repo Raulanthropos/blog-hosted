@@ -53,7 +53,6 @@ export const getAccessToken = (loggingInUser) => {
             const userResponse = await fetch(baseUrl + "/authors/me", opts);
             if (userResponse.ok) {
               const user = await userResponse.json();
-
               dispatch({
                 type: SET_UPDATED_USER,
                 payload: user,

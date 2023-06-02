@@ -112,9 +112,10 @@ const Profile = () => {
   const [modalShow, setModalShow] = React.useState(false);
   const blogs = useSelector((state) => state.loadedProfile.blogPosts);
   const user = useSelector((state) => state.loadedProfile.user);
-  console.log("The user id is this", user._id)
-  const full_name = user.name + " " + user.surname;
+  console.log("The user id is this", user?._id)
+  const full_name = user?.name + " " + user?.surname;
   const my_blogs = blogs?.filter((blog) => blog.author === full_name);
+  console.log("This is the avatar link", user?.avatar)
 
   if (user?.length === 0) {
     return (
@@ -139,7 +140,7 @@ const Profile = () => {
             <div className="position-relative w-100 d-flex justify-content-center">
               <div className=" position-absolute " style={{ bottom: "-500px" }}>
                 <img
-                  src={user.avatar}
+                  src={user?.avatar}
                   className="rounded-circle"
                   style={{ objectFit: "cover"}}
                   id="profile-picture"

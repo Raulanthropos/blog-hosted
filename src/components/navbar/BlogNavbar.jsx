@@ -118,8 +118,9 @@ const NavBar = () => {
               <Link to="/profile">
                 <img
                   src={user?.avatar}
-                  style={{ width: "40px", borderRadius: "50%" }}
+                  style={{ width: "40px", height: "40px", borderRadius: "50%" }}
                   className="hide-on-mobile hide-on-md"
+                  alt="user-avatar"
                 />
               </Link>
             </Nav>
