@@ -39,22 +39,36 @@ const NewBlogPost = (props) => {
     // console.log(poster);
     //eslint-disable-next-line
   }, [editorState]);
+
+  // const itemToSend = {
+  //   title: title,
+  //   category: category,
+  //   content: `${html}`,
+  //   author: {
+  //     name: username,
+  //     avatar:
+  //       user.avatar ||
+  //       "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+  //   },
+  //   readTime: {
+  //     value: value,
+  //     unit: "minutes",
+  //   },
+  //   cover: poster,
+  // };
+
   const itemToSend = {
     title: title,
     category: category,
     content: `${html}`,
-    author: {
-      name: username,
-      avatar:
-        user.avatar ||
-        "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-    },
+    authors: [user], // Add this line to include the authors property
     readTime: {
       value: value,
       unit: "minutes",
     },
     cover: poster,
   };
+  
 
   const onChangeHandler = (value, fieldToSet) => {
     fieldToSet(value);
@@ -87,6 +101,7 @@ const NewBlogPost = (props) => {
               placeholder="Title of your blog"
               value={title}
               onChange={(e) => onChangeHandler(e.target.value, setTitle)}
+              required
             />
           </Form.Group>
           <Row>
@@ -98,6 +113,7 @@ const NewBlogPost = (props) => {
                   placeholder="Anthony Stark"
                   value={username}
                   onChange={(e) => onChangeHandler(e.target.value, setName)}
+                  required
                 />
               </Form.Group>
             </Col>
@@ -109,6 +125,7 @@ const NewBlogPost = (props) => {
                   placeholder="eg. Politics"
                   value={category}
                   onChange={(e) => onChangeHandler(e.target.value, setCategory)}
+                  required
                 />
               </Form.Group>
             </Col>
@@ -120,6 +137,7 @@ const NewBlogPost = (props) => {
                   placeholder="2"
                   value={value}
                   onChange={(e) => onChangeHandler(e.target.value, setValue)}
+                  required
                 />
               </Form.Group>
             </Col>
@@ -147,7 +165,7 @@ const NewBlogPost = (props) => {
             <div>
             <Form.Group controlId="formPicture">
             <Form.Label>Picture URL</Form.Label>
-            <Form.Control type="text" placeholder="Enter picture URL" value={poster} onChange={event => setPoster(event.target.value)}/>
+            <Form.Control type="text" placeholder="Enter picture URL" value={poster} onChange={event => setPoster(event.target.value)} required/>
           </Form.Group>
             </div>
           </div>
