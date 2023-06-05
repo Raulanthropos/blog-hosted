@@ -1,5 +1,4 @@
 import React from "react";
-import { Button, Container, Navbar, Footer } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./styles.css";
 import { IoMdAddCircleOutline } from "react-icons/io";
@@ -12,7 +11,7 @@ const Navbarmobile = (props) => {
       style={{ borderRadius: "20px" }}
       id="navbar-mobile"
     >
-      {/*------------------------------------------------------------------------ movile-version */}
+      {/*------------------------------------------------------------------------ mobile-version */}
       <div
         id="navbar-post-mobile"
         className="w-100 d-flex justify-content-around"
