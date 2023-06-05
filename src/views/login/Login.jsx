@@ -13,15 +13,34 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  const [responseJSON, setResponseJSON] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const user = useSelector((state) => state.loadedProfile.user)
+  const fullName = user.name + " " + user.surname;
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     const credentials = {
       email: email,
       password: password
+    }
+    console.log("logging in")
+    try {
+      await new Promise((resolve, reject) => {
+        dispatch(getAccessToken(credentials, resolve, reject))
+          .then(resolve)
+          .catch(reject);
+      });
+      setLoggedIn(true);
+    } catch (error) {
+        setErrorMessage("Incorrect email or password. Please try again.");
+    }
+
+  }
+  const handleSubmitTestUser = async (event) => {
+    event.preventDefault()
+    const credentials = {
+      email: "testuser@example.com",
+      password: "123465"
     }
     console.log("logging in")
     try {
@@ -52,7 +71,7 @@ const Login = () => {
     return (
       <>
         <div className="mt-5 mb-5 text-light d-flex justify-content-center">
-          Welcome, {email}!{}
+          Welcome, {email === "testuser@example.com" ? "Test User" : fullName}!{}
         </div>
         <div className="d-flex justify-content-center align-items-center">
           <Spinner animation="border" />
@@ -92,6 +111,14 @@ const Login = () => {
                 <h6 className="p-0 m-0"> Sign-up</h6>
               </Link>
             </div>
+            <button
+              type="button"
+              className="btn btn-success"
+              id="login test"
+              onClick={handleSubmitTestUser}
+            >
+              Login as test user
+            </button>
             <button
               type="button"
               className="btn btn-outline-light"
