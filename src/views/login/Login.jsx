@@ -36,25 +36,25 @@ const Login = () => {
     }
 
   }
-  // const handleSubmitTestUser = async (event) => {
-  //   event.preventDefault()
-  //   const credentials = {
-  //     email: "testuser@example.com",
-  //     password: "123465"
-  //   }
-  //   console.log("logging in")
-  //   try {
-  //     await new Promise((resolve, reject) => {
-  //       dispatch(getAccessToken(credentials, resolve, reject))
-  //         .then(resolve)
-  //         .catch(reject);
-  //     });
-  //     setLoggedIn(true);
-  //   } catch (error) {
-  //       setErrorMessage("Incorrect email or password. Please try again.");
-  //   }
+  const handleSubmitTestUser = async (event) => {
+    event.preventDefault()
+    const credentials = {
+      email: "testuser@example.com",
+      password: "123465"
+    }
+    console.log("logging in")
+    try {
+      await new Promise((resolve, reject) => {
+        dispatch(getAccessToken(credentials, resolve, reject))
+          .then(resolve)
+          .catch(reject);
+      });
+      setLoggedIn(true);
+    } catch (error) {
+        setErrorMessage("Incorrect email or password. Please try again.");
+    }
 
-  // }
+  }
   const redirectme = () => {
     // setTimeout(() => {
     //
@@ -111,14 +111,14 @@ const Login = () => {
                 <h6 className="p-0 m-0"> Sign-up</h6>
               </Link>
             </div>
-            {/* <button
+            <button
               type="button"
               className="btn btn-success"
-              id="login test"
+              id="login-test"
               onClick={handleSubmitTestUser}
             >
               Login as test user
-            </button> */}
+            </button>
             <button
               type="button"
               className="btn btn-outline-light"
