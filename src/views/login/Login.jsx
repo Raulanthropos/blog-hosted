@@ -62,7 +62,7 @@ const Login = () => {
     //   3000;
     setTimeout(() => {
       window.location.replace("/home");
-    }, 6000);
+    }, 4000);
   };
   const onChangeHandler = (value, fieldToSet) => {
     fieldToSet(value);
