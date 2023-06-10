@@ -5,12 +5,7 @@ const initialState = {
   isLoading: true,
   id: "",
   user: null,
-  updatedUser: { // set an initial value for updatedUser
-    _id: "",
-    name: "",
-    surname: "",
-    password: "",
-  },
+  updatedUser: null,
   accessToken: localStorage.getItem("accessToken"),
 };
 
@@ -50,7 +45,7 @@ const mainReducer = (state = initialState, action) => {
     case SET_UPDATED_USER: {
       return {
         ...state,
-        updatedUser: action.payload,
+        user: action.payload,
         isLoading: false,
       };
     }

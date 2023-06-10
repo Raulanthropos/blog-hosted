@@ -16,18 +16,27 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 function MyVerticallyCenteredModal(props) {
-  const [modalShow, setModalShow] = useState(false);
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [password, setPassword] = useState("");
+  let [modalShow, setModalShow] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.loadedProfile.user);
   const updatedUser = useSelector((state) => state.loadedProfile.updatedUser);
-  console.log("This is the updated user", updatedUser)
+
+  const handleShow = () => {
+    console.log("handleShow called");
+    modalShow = true;
+  };
+
   const logout = () => {
     dispatch({
       type: SET_USER,
       payload: [],
     }).then(setTimeout(() => navigate("/"), 2000));
   };
+
   function hidePassword() {
     console.log("yes");
     const x = document.getElementById("myInput");
@@ -40,18 +49,21 @@ function MyVerticallyCenteredModal(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const name = document.getElementById("name").value;
-    const surname = document.getElementById("surname").value;
-    const password = document.getElementById("password").value;
-    dispatch(updateAuthor({ ...updatedUser, ...{ name, surname, password } }))
-.then(() => {
-      setModalShow(false);
-    })
-    .catch(error => {
-      setModalShow(false);
-      console.log(error);
-    });
+    console.log("name:", name, "surname:", surname, "password:", password);
+    dispatch(updateAuthor({ ...user, ...{ name, surname, password } }))
+      .then(() => {
+        console.log("Updated user successfully!")
+        setModalShow(false);
+        console.log("Modal should be closed now", modalShow)
+      })
+      .catch((error) => {
+        setModalShow(false);
+        console.log(error);
+        alert("Error updating profile!");
+        dispatch(updateAuthor({ ...user, ...{ name, surname, password } }));
+      });
   };
+  
 
   return (
     <Modal
@@ -59,6 +71,7 @@ function MyVerticallyCenteredModal(props) {
       size="sm"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      id="myModal"
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">Settings</Modal.Title>
@@ -71,6 +84,7 @@ function MyVerticallyCenteredModal(props) {
               aria-label="exiting_user"
               defaultValue={user?.name}
               id="name"
+              onChange={(e) => setName(e.target.value)}
             />
           </InputGroup>
           <InputGroup className="mt-1 mb-1">
@@ -79,6 +93,7 @@ function MyVerticallyCenteredModal(props) {
               aria-label="exiting_user"
               defaultValue={user?.surname}
               id="surname"
+              onChange={(e) => setSurname(e.target.value)}
             />
           </InputGroup>
           <InputGroup className="mt-1 mb-1">
@@ -89,6 +104,7 @@ function MyVerticallyCenteredModal(props) {
               defaultValue={user?.password}
               className="w-100"
               id="password"
+              onChange={(e) => setPassword(e.target.value)}
             />
             <div className="w-50 mt-1">
               <input type="checkbox" onClick={() => hidePassword()} /> Show
@@ -113,11 +129,12 @@ const Profile = () => {
   const blogs = useSelector((state) => state.loadedProfile.blogPosts);
   const user = useSelector((state) => state.loadedProfile.user);
   const navigate = useNavigate();
-  console.log("The user id is this", user?._id)
   const full_name = user?.name + " " + user?.surname;
   const my_blogs = blogs?.filter((blog) => blog.author === full_name);
-  console.log("This is the avatar link", user?.avatar)
-
+  const handleShow = () => {
+    console.log("handleShow called");
+    setModalShow(true);
+  };
   if (user?.length === 0) {
     return (
       <>
@@ -170,7 +187,7 @@ const Profile = () => {
             variant="dark"
             className="m-1 w-25"
             id="setandedit"
-            onClick={() => setModalShow(true)}
+            onClick={handleShow}
           >
             Settings
           </Button>

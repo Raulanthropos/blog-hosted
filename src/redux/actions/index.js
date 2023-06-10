@@ -151,7 +151,6 @@ export const updateAuthor = (user) => {
     };
     try {
       const response = await fetch(baseUrl + `/authors/${user._id}`, opts);
-
       if (response.ok) {
         const updatedAuthor = await response.json();
         console.log("updatedAuthor", updatedAuthor);
