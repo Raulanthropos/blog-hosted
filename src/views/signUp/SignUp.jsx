@@ -45,31 +45,37 @@ const SignUp = (props) => {
 
   //---------------------------------------------------------------------------------------
   const newPostAction = (formData1, formData2) => {
+    const formData = new FormData();
+    formData.append("avatar", avatar);
+    formData.append("name", name);
+    formData.append("surname", surname);
+    formData.append("email", email);
+    formData.append("password", password);
+  
     const options = {
       method: "POST",
-      body: JSON.stringify(itemToSend),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: formData,
     };
+  
     fetch(process.env.REACT_APP_BE_URL + "/authors/register", options)
       .then((response) => response.json())
       .then((s) => {
         console.log(s);
         return s;
       }).then((s) => {
-              if (s) {
-                console.log(s);
-                dispatch({
-                  type: SET_USER,
-                  payload: s,
-                });
-
-                setLoading(false);
-                window.location.replace("/");
-              }
-            })
+        if (s) {
+          console.log(s);
+          dispatch({
+            type: SET_USER,
+            payload: s,
+          });
+  
+          setLoading(false);
+          window.location.replace("/");
+        }
+      });
   };
+  
   if (loading) {
     return (
       <div className="text-light" id="full-screen">

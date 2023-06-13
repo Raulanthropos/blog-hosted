@@ -112,10 +112,10 @@ function MyVerticallyCenteredModal(props) {
             </div>
           </InputGroup>
           <div className="text-center mt-4">
-            <Button className="btn btn-primary" type="submit">
+            <Button className="btn btn-outline-dark" type="submit">
               Save changes
             </Button>
-            <Button className="btn btn-danger" onClick={logout}>
+            <Button className="btn btn-outline-dark" onClick={logout}>
               Logout
             </Button>
           </div>

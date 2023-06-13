@@ -113,7 +113,7 @@ const Login = () => {
             </div>
             <button
               type="button"
-              className="btn btn-success"
+              className="btn btn-outline-light"
               id="login-test"
               onClick={handleSubmitTestUser}
             >
